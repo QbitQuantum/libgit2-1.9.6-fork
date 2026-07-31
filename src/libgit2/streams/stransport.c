@@ -5,7 +5,7 @@
  * a Linking Exception. For full terms see the included COPYING file.
  */
 
-#include "streams/stransport.h"
+#include "stransport.h"
 
 #ifdef GIT_SECURE_TRANSPORT
 
@@ -16,7 +16,7 @@
 #include "common.h"
 #include "trace.h"
 #include "git2/transport.h"
-#include "streams/socket.h"
+#include "socket.h"
 
 static int stransport_error(OSStatus ret)
 {

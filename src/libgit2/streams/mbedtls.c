@@ -5,7 +5,7 @@
  * a Linking Exception. For full terms see the included COPYING file.
  */
 
-#include "streams/mbedtls.h"
+#include "mbedtls.h"
 
 #ifdef GIT_MBEDTLS
 
@@ -13,7 +13,7 @@
 
 #include "runtime.h"
 #include "stream.h"
-#include "streams/socket.h"
+#include "socket.h"
 #include "git2/transport.h"
 #include "util.h"
 

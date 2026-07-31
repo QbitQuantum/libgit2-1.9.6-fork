@@ -5,7 +5,7 @@
  * a Linking Exception. For full terms see the included COPYING file.
  */
 
-#include "streams/schannel.h"
+#include "schannel.h"
 
 #ifdef GIT_SCHANNEL
 
@@ -16,7 +16,7 @@
 #include <sspi.h>
 
 #include "stream.h"
-#include "streams/socket.h"
+#include "socket.h"
 
 #ifndef SP_PROT_TLS1_2_CLIENT
 # define SP_PROT_TLS1_2_CLIENT 2048

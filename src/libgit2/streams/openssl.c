@@ -5,9 +5,9 @@
  * a Linking Exception. For full terms see the included COPYING file.
  */
 
-#include "streams/openssl.h"
-#include "streams/openssl_legacy.h"
-#include "streams/openssl_dynamic.h"
+#include "openssl.h"
+#include "openssl_legacy.h"
+#include "openssl_dynamic.h"
 
 #ifdef GIT_OPENSSL
 
@@ -19,7 +19,7 @@
 #include "posix.h"
 #include "stream.h"
 #include "net.h"
-#include "streams/socket.h"
+#include "socket.h"
 #include "git2/transport.h"
 #include "git2/sys/openssl.h"
 

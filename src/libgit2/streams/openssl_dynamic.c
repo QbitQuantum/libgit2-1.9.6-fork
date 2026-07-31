@@ -5,8 +5,8 @@
  * a Linking Exception. For full terms see the included COPYING file.
  */
 
-#include "streams/openssl.h"
-#include "streams/openssl_dynamic.h"
+#include "openssl.h"
+#include "openssl_dynamic.h"
 
 #if defined(GIT_OPENSSL) && defined(GIT_OPENSSL_DYNAMIC)
 

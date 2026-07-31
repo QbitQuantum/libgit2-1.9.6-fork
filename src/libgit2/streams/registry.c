@@ -7,13 +7,13 @@
 
 #include "common.h"
 
-#include "streams/registry.h"
+#include "registry.h"
 
 #include "runtime.h"
-#include "streams/tls.h"
-#include "streams/mbedtls.h"
-#include "streams/openssl.h"
-#include "streams/stransport.h"
+#include "tls.h"
+#include "mbedtls.h"
+#include "openssl.h"
+#include "stransport.h"
 
 struct stream_registry {
 	git_rwlock lock;

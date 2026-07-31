@@ -5,8 +5,8 @@
  * a Linking Exception. For full terms see the included COPYING file.
  */
 
-#include "streams/openssl.h"
-#include "streams/openssl_legacy.h"
+#include "openssl.h"
+#include "openssl_legacy.h"
 
 #include "runtime.h"
 #include "git2/sys/openssl.h"

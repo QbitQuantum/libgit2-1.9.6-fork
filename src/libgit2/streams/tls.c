@@ -8,12 +8,12 @@
 #include "git2/errors.h"
 
 #include "common.h"
-#include "streams/registry.h"
-#include "streams/tls.h"
-#include "streams/mbedtls.h"
-#include "streams/openssl.h"
-#include "streams/stransport.h"
-#include "streams/schannel.h"
+#include "registry.h"
+#include "tls.h"
+#include "mbedtls.h"
+#include "openssl.h"
+#include "stransport.h"
+#include "schannel.h"
 
 int git_tls_stream_new(git_stream **out, const char *host, const char *port)
 {
