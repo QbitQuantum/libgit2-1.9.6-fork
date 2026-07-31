@@ -1,4 +1,4 @@
-/************************* sha224-256.c ************************/
+/**************************** sha.c ****************************/
 /***************** See RFC 6234 for details. *******************/
 /* Copyright (c) 2011 IETF Trust and the persons identified as */
 /* authors of the code.  All rights reserved.                  */
