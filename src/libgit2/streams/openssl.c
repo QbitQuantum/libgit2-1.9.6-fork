@@ -6,7 +6,6 @@
  */
 
 #include "openssl.h"
-#include "openssl_legacy.h"
 #include "openssl_dynamic.h"
 
 #ifdef GIT_OPENSSL
@@ -63,8 +62,6 @@ static void shutdown_ssl(void)
 }
 
 #ifdef VALGRIND
-# if !defined(GIT_OPENSSL_LEGACY) && !defined(GIT_OPENSSL_DYNAMIC)
-
 static void *git_openssl_malloc(size_t bytes, const char *file, int line)
 {
 	GIT_UNUSED(file);
@@ -85,22 +82,6 @@ static void git_openssl_free(void *mem, const char *file, int line)
 	GIT_UNUSED(line);
 	git__free(mem);
 }
-# else /* !GIT_OPENSSL_LEGACY && !GIT_OPENSSL_DYNAMIC */
-static void *git_openssl_malloc(size_t bytes)
-{
-	return git__calloc(1, bytes);
-}
-
-static void *git_openssl_realloc(void *mem, size_t size)
-{
-	return git__realloc(mem, size);
-}
-
-static void git_openssl_free(void *mem)
-{
-	git__free(mem);
-}
-# endif /* !GIT_OPENSSL_LEGACY && !GIT_OPENSSL_DYNAMIC */
 #endif /* VALGRIND */
 
 static int openssl_init(void)
@@ -210,17 +191,15 @@ static int openssl_ensure_initialized(void)
 #endif
 }
 
-#if !defined(GIT_OPENSSL_LEGACY) && !defined(GIT_OPENSSL_DYNAMIC)
 int git_openssl_set_locking(void)
 {
-# ifdef GIT_THREADS
+#ifdef GIT_THREADS
 	return 0;
-# else
+#else
 	git_error_set(GIT_ERROR_THREAD, "libgit2 was not built with threads");
 	return -1;
-# endif
-}
 #endif
+}
 
 
 static int bio_create(BIO *b)
