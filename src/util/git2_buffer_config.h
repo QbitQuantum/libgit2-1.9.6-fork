@@ -1,0 +1,9 @@
+#ifndef INCLUDE_buffer_config_h__
+#define INCLUDE_buffer_config_h__
+
+#define GIT_BUFSIZE_DEFAULT 65536
+#define GIT_BUFSIZE_FILEIO GIT_BUFSIZE_DEFAULT
+#define GIT_BUFSIZE_FILTERIO GIT_BUFSIZE_DEFAULT
+#define GIT_BUFSIZE_NETIO GIT_BUFSIZE_DEFAULT
+
+#endif /* INCLUDE_buffer_config_h__ */
