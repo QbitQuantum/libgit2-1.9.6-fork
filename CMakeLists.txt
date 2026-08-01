@@ -50,7 +50,6 @@ option(DEBUG_STRICT_OPEN       "Enable path validation in open"                 
 # Output options
 option(SONAME                  "Set the (SO)VERSION of the target"                      ON)
    set(LIBGIT2_FILENAME        "git2" CACHE STRING "Name of the produced binary")
-option(DEPRECATE_HARD          "Do not include deprecated functions in the library"    OFF)
 
 # Compilation options
 # Default to c99 on Android Studio for compatibility; c90 everywhere else

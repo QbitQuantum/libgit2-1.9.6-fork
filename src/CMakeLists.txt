@@ -5,10 +5,6 @@
 # Optional build configuration settings
 #
 
-if(DEPRECATE_HARD)
-        add_definitions(-DGIT_DEPRECATE_HARD)
-endif()
-
 if(USE_LEAK_CHECKER STREQUAL "valgrind")
 	add_definitions(-DVALGRIND)
 endif()

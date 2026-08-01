@@ -21,9 +21,6 @@ add_definitions(-DCLAR_WIN32_LONGPATHS)
 add_definitions(-DCLAR_HAS_REALPATH)
 add_definitions(-D_FILE_OFFSET_BITS=64)
 
-# Ensure that we do not use deprecated functions internally
-add_definitions(-DGIT_DEPRECATE_HARD)
-
 set(TEST_INCLUDES "${CLAR_PATH}" "${TEST_PATH}" "${CMAKE_CURRENT_BINARY_DIR}")
 file(GLOB_RECURSE SRC_TEST ${TEST_PATH}/*.c ${TEST_PATH}/*.h ${TEST_PATH}/*/*.c ${TEST_PATH}/*/*.h)
 file(GLOB_RECURSE SRC_CLAR ${CLAR_PATH}/*.c ${CLAR_PATH}/*.h)

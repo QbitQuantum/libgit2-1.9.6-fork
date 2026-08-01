@@ -63,7 +63,6 @@ async function headerPaths(p) {
         paths.push(...(await fs.readdir(fullPath)).
             filter((filename) => filename.endsWith('.h')).
             filter((filename) => !fileIgnoreList.includes(filename)).
-            filter((filename) => filename !== 'deprecated.h' || !options.deprecateHard).
             map((filename) => `${fullPath}/${filename}`));
     }
 
@@ -130,10 +129,6 @@ function readAst(path, options) {
         const chunks = [ ];
 
         const processArgs = [ path, '-Xclang', '-ast-dump=json', `-I${includeBase(path)}` ];
-
-        if (options?.deprecateHard) {
-            processArgs.push(`-DGIT_DEPRECATE_HARD`);
-        }
 
         if (options?.includeFiles) {
             for (const file of options.includeFiles) {
@@ -1537,7 +1532,6 @@ if (options['include'] && !options['includes']) {
         }
 
         const parseOptions = {
-            deprecateHard: options.deprecateHard || false,
             includeFiles: includes,
             strict: options.strict || false
         };

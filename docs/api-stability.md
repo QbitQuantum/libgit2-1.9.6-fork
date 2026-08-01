@@ -15,11 +15,6 @@ Our API stability considerations are:
   * APIs will maintain their signature and will not be removed within a
     major release, but new APIs may be added.
 
-  * Any APIs may be marked as deprecated within a major release, but will
-    not be removed until the next major release (at the earliest).  You
-    may define `GIT_DEPRECATE_HARD` to produce compiler warnings if you
-    target these deprecated APIs.
-
   * We consider API compatibility to be against the C APIs.  That means
     that we may use macros to keep API compatibility - for example, if we
     rename a structure from `git_widget_options` to `git_foobar_options`
