@@ -1462,10 +1462,6 @@ int git_packbuilder_write(
 	if ((error = git_indexer_commit(indexer, &stats)) < 0)
 		goto cleanup;
 
-#ifndef GIT_DEPRECATE_HARD
-	git_oid_cpy(&pb->pack_oid, git_indexer_hash(indexer));
-#endif
-
 	pb->pack_name = git__strdup(git_indexer_name(indexer));
 	GIT_ERROR_CHECK_ALLOC(pb->pack_name);
 
@@ -1476,13 +1472,6 @@ cleanup:
 }
 
 #undef PREPARE_PACK
-
-#ifndef GIT_DEPRECATE_HARD
-const git_oid *git_packbuilder_hash(git_packbuilder *pb)
-{
-	return &pb->pack_oid;
-}
-#endif
 
 const char *git_packbuilder_name(git_packbuilder *pb)
 {

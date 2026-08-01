@@ -553,82 +553,12 @@ void test_network_fetchlocal__update_refs_error_is_propagated(void)
 	git_repository_free(repo);
 }
 
-#ifndef GIT_DEPRECATE_HARD
-static int update_tips(const char *ref, const git_oid *old, const git_oid *new, void *data)
-{
-	int *called = (int *) data;
-
-	GIT_UNUSED(ref);
-	GIT_UNUSED(old);
-	GIT_UNUSED(new);
-
-	(*called) += 1;
-
-	return 0;
-}
-
-static int update_refs(const char *ref, const git_oid *old, const git_oid *new, git_refspec *spec, void *data)
-{
-	int *called = (int *) data;
-
-	GIT_UNUSED(ref);
-	GIT_UNUSED(old);
-	GIT_UNUSED(new);
-	GIT_UNUSED(spec);
-
-	(*called) += 0x10000;
-
-	return 0;
-}
-#endif
-
 void test_network_fetchlocal__update_tips_backcompat(void)
 {
-#ifndef GIT_DEPRECATE_HARD
-	git_repository *repo;
-	git_remote *remote;
-	git_fetch_options options = GIT_FETCH_OPTIONS_INIT;
-	int callcount = 0;
 
-	cl_git_pass(git_repository_init(&repo, "foo.git", true));
-	cl_set_cleanup(cleanup_local_repo, "foo.git");
-
-	cl_git_pass(git_remote_create_with_fetchspec(&remote, repo, "origin", cl_git_fixture_url("testrepo.git"), "+refs/heads/*:refs/remotes/update-tips/*"));
-
-	options.callbacks.update_tips = update_tips;
-	options.callbacks.payload = &callcount;
-
-	cl_git_pass(git_remote_fetch(remote, NULL, &options, NULL));
-	cl_assert_equal_i(0, (callcount & 0xffff0000));
-	cl_assert((callcount & 0x0000ffff) > 0);
-
-	git_remote_free(remote);
-	git_repository_free(repo);
-#endif
 }
 
 void test_network_fetchlocal__update_refs_is_preferred(void)
 {
-#ifndef GIT_DEPRECATE_HARD
-	git_repository *repo;
-	git_remote *remote;
-	git_fetch_options options = GIT_FETCH_OPTIONS_INIT;
-	int callcount = 0;
 
-	cl_git_pass(git_repository_init(&repo, "foo.git", true));
-	cl_set_cleanup(cleanup_local_repo, "foo.git");
-
-	cl_git_pass(git_remote_create_with_fetchspec(&remote, repo, "origin", cl_git_fixture_url("testrepo.git"), "+refs/heads/*:refs/remotes/update-tips/*"));
-
-	options.callbacks.update_tips = update_tips;
-	options.callbacks.update_refs = update_refs;
-	options.callbacks.payload = &callcount;
-
-	cl_git_pass(git_remote_fetch(remote, NULL, &options, NULL));
-	cl_assert_equal_i(0, (callcount & 0x0000ffff));
-	cl_assert((callcount & 0xffff0000) > 0);
-
-	git_remote_free(remote);
-	git_repository_free(repo);
-#endif
 }

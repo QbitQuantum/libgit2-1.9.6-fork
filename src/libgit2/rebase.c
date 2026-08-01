@@ -499,13 +499,6 @@ int git_rebase_options_init(git_rebase_options *opts, unsigned int version)
 	return 0;
 }
 
-#ifndef GIT_DEPRECATE_HARD
-int git_rebase_init_options(git_rebase_options *opts, unsigned int version)
-{
-	return git_rebase_options_init(opts, version);
-}
-#endif
-
 static int rebase_ensure_not_in_progress(git_repository *repo)
 {
 	int error;
@@ -942,54 +935,6 @@ int git_rebase_inmemory_index(
 	return 0;
 }
 
-#ifndef GIT_DEPRECATE_HARD
-static int create_signed(
-	git_oid *out,
-	git_rebase *rebase,
-	const git_signature *author,
-	const git_signature *committer,
-	const char *message_encoding,
-	const char *message,
-	git_tree *tree,
-	size_t parent_count,
-	const git_commit **parents)
-{
-	git_str commit_content = GIT_STR_INIT;
-	git_buf commit_signature = { NULL, 0, 0 },
-	        signature_field = { NULL, 0, 0 };
-	int error;
-
-	git_error_clear();
-
-	if ((error = git_commit__create_buffer(&commit_content,
-		rebase->repo, author, committer, message_encoding,
-		message, tree, parent_count, parents)) < 0)
-		goto done;
-
-	error = rebase->options.signing_cb(&commit_signature,
-		&signature_field, commit_content.ptr,
-		rebase->options.payload);
-
-	if (error) {
-		if (error != GIT_PASSTHROUGH)
-			git_error_set_after_callback_function(error, "signing_cb");
-
-		goto done;
-	}
-
-	error = git_commit_create_with_signature(out, rebase->repo,
-		commit_content.ptr,
-		commit_signature.size > 0 ? commit_signature.ptr : NULL,
-		signature_field.size > 0 ? signature_field.ptr : NULL);
-
-done:
-	git_buf_dispose(&commit_signature);
-	git_buf_dispose(&signature_field);
-	git_str_dispose(&commit_content);
-	return error;
-}
-#endif
-
 static int rebase_commit__create(
 	git_commit **out,
 	git_rebase *rebase,
@@ -1046,14 +991,7 @@ static int rebase_commit__create(
 		git_error_set_after_callback_function(error,
 			"commit_create_cb");
 	}
-#ifndef GIT_DEPRECATE_HARD
-	else if (rebase->options.signing_cb) {
-		error = create_signed(&commit_id, rebase, author,
-			committer, message_encoding, message, tree,
-			1, (const git_commit **)&parent_commit);
-	}
-#endif
-
+	
 	if (error == GIT_PASSTHROUGH)
 		error = git_commit_create(&commit_id, rebase->repo, NULL,
 			author, committer, message_encoding, message,

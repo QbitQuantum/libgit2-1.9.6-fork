@@ -457,12 +457,6 @@ int git_blob_filter(
 
 	if ((opts.flags & GIT_BLOB_FILTER_ATTRIBUTES_FROM_COMMIT) != 0) {
 		filter_opts.flags |= GIT_FILTER_ATTRIBUTES_FROM_COMMIT;
-
-#ifndef GIT_DEPRECATE_HARD
-		if (opts.commit_id)
-			git_oid_cpy(&filter_opts.attr_commit_id, opts.commit_id);
-		else
-#endif
 		git_oid_cpy(&filter_opts.attr_commit_id, &opts.attr_commit_id);
 	}
 
@@ -477,54 +471,3 @@ int git_blob_filter(
 
 	return error;
 }
-
-/* Deprecated functions */
-
-#ifndef GIT_DEPRECATE_HARD
-int git_blob_create_frombuffer(
-	git_oid *id, git_repository *repo, const void *buffer, size_t len)
-{
-	return git_blob_create_from_buffer(id, repo, buffer, len);
-}
-
-int git_blob_create_fromworkdir(git_oid *id, git_repository *repo, const char *relative_path)
-{
-	return git_blob_create_from_workdir(id, repo, relative_path);
-}
-
-int git_blob_create_fromdisk(git_oid *id, git_repository *repo, const char *path)
-{
-	return git_blob_create_from_disk(id, repo, path);
-}
-
-int git_blob_create_fromstream(
-    git_writestream **out,
-    git_repository *repo,
-    const char *hintpath)
-{
-	return  git_blob_create_from_stream(out, repo, hintpath);
-}
-
-int git_blob_create_fromstream_commit(
-	git_oid *out,
-	git_writestream *stream)
-{
-	return git_blob_create_from_stream_commit(out, stream);
-}
-
-int git_blob_filtered_content(
-	git_buf *out,
-	git_blob *blob,
-	const char *path,
-	int check_for_binary_data)
-{
-	git_blob_filter_options opts = GIT_BLOB_FILTER_OPTIONS_INIT;
-
-	if (check_for_binary_data)
-		opts.flags |= GIT_BLOB_FILTER_CHECK_FOR_BINARY;
-	else
-		opts.flags &= ~GIT_BLOB_FILTER_CHECK_FOR_BINARY;
-
-	return git_blob_filter(out, blob, path, &opts);
-}
-#endif

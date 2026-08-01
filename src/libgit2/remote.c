@@ -198,13 +198,6 @@ int git_remote_create_options_init(git_remote_create_options *opts, unsigned int
 	return 0;
 }
 
-#ifndef GIT_DEPRECATE_HARD
-int git_remote_create_init_options(git_remote_create_options *opts, unsigned int version)
-{
-	return git_remote_create_options_init(opts, version);
-}
-#endif
-
 int git_remote_create_with_opts(git_remote **out, const char *url, const git_remote_create_options *opts)
 {
 	git_remote *remote = NULL;
@@ -702,26 +695,8 @@ static int resolve_url(
 	int direction,
 	const git_remote_callbacks *callbacks)
 {
-#ifdef GIT_DEPRECATE_HARD
 	GIT_UNUSED(direction);
 	GIT_UNUSED(callbacks);
-#else
-	git_buf buf = GIT_BUF_INIT;
-	int error;
-
-	if (callbacks && callbacks->resolve_url) {
-		error = callbacks->resolve_url(&buf, url, direction, callbacks->payload);
-
-		if (error != GIT_PASSTHROUGH) {
-			git_error_set_after_callback_function(error, "git_resolve_url_cb");
-
-			git_str_set(resolved_url, buf.ptr, buf.size);
-			git_buf_dispose(&buf);
-
-			return error;
-		}
-	}
-#endif
 
 	return git_str_sets(resolved_url, url);
 }
@@ -1734,11 +1709,6 @@ int git_remote_prune(git_remote *remote, const git_remote_callbacks *callbacks)
 		if (callbacks && callbacks->update_refs)
 			error = callbacks->update_refs(refname, &id,
 				&zero_id, NULL, callbacks->payload);
-#ifndef GIT_DEPRECATE_HARD
-		else if (callbacks && callbacks->update_tips)
-			error = callbacks->update_tips(refname, &id,
-				&zero_id, callbacks->payload);
-#endif
 
 		if (error < 0) {
 			git_error_set_after_callback_function(error, "git_remote_fetch");
@@ -1788,11 +1758,6 @@ static int update_ref(
 	if (callbacks && callbacks->update_refs)
 		error = callbacks->update_refs(ref_name, &old_id,
 			id, spec, callbacks->payload);
-#ifndef GIT_DEPRECATE_HARD
-	else if (callbacks && callbacks->update_tips)
-		error = callbacks->update_tips(ref_name, &old_id,
-			id, callbacks->payload);
-#endif
 
 	if (error < 0) {
 		git_error_set_after_callback_function(error, "git_remote_fetch");
@@ -1910,11 +1875,6 @@ static int update_one_tip(
 	if (callbacks && callbacks->update_refs)
 		error = callbacks->update_refs(refname.ptr, &old,
 			&head->oid, spec, callbacks->payload);
-#ifndef GIT_DEPRECATE_HARD
-	else if (callbacks && callbacks->update_tips)
-		error = callbacks->update_tips(refname.ptr, &old,
-			&head->oid, callbacks->payload);
-#endif
 
 	if (error < 0)
 		git_error_set_after_callback_function(error, "git_remote_fetch");
@@ -3144,17 +3104,3 @@ static int apply_insteadof(char **out, git_config *config, const char *url, int 
 	*out = git_str_detach(&result);
 	return 0;
 }
-
-/* Deprecated functions */
-
-#ifndef GIT_DEPRECATE_HARD
-
-int git_remote_is_valid_name(const char *remote_name)
-{
-	int valid = 0;
-
-	git_remote_name_is_valid(&valid, remote_name);
-	return valid;
-}
-
-#endif

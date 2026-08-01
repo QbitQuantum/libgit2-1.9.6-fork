@@ -285,39 +285,6 @@ GIT_EXTERN(const git_blame_line *) git_blame_line_byindex(
 	git_blame *blame,
 	size_t idx);
 
-#ifndef GIT_DEPRECATE_HARD
-/**
- * Gets the number of hunks that exist in the blame structure.
- *
- * @param blame The blame structure to query.
- * @return The number of hunks.
- */
-
-GIT_EXTERN(uint32_t) git_blame_get_hunk_count(git_blame *blame);
-
-/**
- * Gets the blame hunk at the given index.
- *
- * @param blame the blame structure to query
- * @param index index of the hunk to retrieve
- * @return the hunk at the given index, or NULL on error
- */
-GIT_EXTERN(const git_blame_hunk *) git_blame_get_hunk_byindex(
-	git_blame *blame,
-	uint32_t index);
-
-/**
- * Gets the hunk that relates to the given line number in the newest commit.
- *
- * @param blame the blame structure to query
- * @param lineno the (1-based) line number to find a hunk for
- * @return the hunk that contains the given line, or NULL on error
- */
-GIT_EXTERN(const git_blame_hunk *) git_blame_get_hunk_byline(
-	git_blame *blame,
-	size_t lineno);
-#endif
-
 /**
  * Get the blame for a single file in the repository.
  *

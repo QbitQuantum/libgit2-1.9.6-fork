@@ -547,23 +547,6 @@ typedef int GIT_CALLBACK(git_push_negotiation)(
  */
 typedef int GIT_CALLBACK(git_push_update_reference_cb)(const char *refname, const char *status, void *data);
 
-#ifndef GIT_DEPRECATE_HARD
-/**
- * Callback to resolve URLs before connecting to remote
- *
- * If you return GIT_PASSTHROUGH, you don't need to write anything to
- * url_resolved.
- *
- * @param url_resolved The buffer to write the resolved URL to
- * @param url The URL to resolve
- * @param direction GIT_DIRECTION_FETCH or GIT_DIRECTION_PUSH
- * @param payload Payload provided by the caller
- * @return 0 on success, GIT_PASSTHROUGH or an error
- * @deprecated Use `git_remote_set_instance_url`
- */
-typedef int GIT_CALLBACK(git_url_resolve_cb)(git_buf *url_resolved, const char *url, int direction, void *payload);
-#endif
-
 /**
  * Callback invoked immediately before we attempt to connect to the
  * given url.  Callers may change the URL before the connection by
@@ -622,22 +605,7 @@ struct git_remote_callbacks {
 	 */
 	git_indexer_progress_cb transfer_progress;
 
-#ifdef GIT_DEPRECATE_HARD
 	void *reserved_update_tips;
-#else
-	/**
-	 * Deprecated callback for reference updates, callers should
-	 * set `update_refs` instead. This is retained for backward
-	 * compatibility; if you specify both `update_refs` and
-	 * `update_tips`, then only the `update_refs` function will
-	 * be called.
-	 *
-	 * @deprecated the `update_refs` callback in this structure
-	 * should be preferred
-	 */
-	int GIT_CALLBACK(update_tips)(const char *refname,
-		const git_oid *a, const git_oid *b, void *data);
-#endif
 
 	/**
 	 * Function to call with progress information during pack
@@ -682,19 +650,7 @@ struct git_remote_callbacks {
 	 */
 	void *payload;
 
-#ifdef GIT_DEPRECATE_HARD
 	void *reserved;
-#else
-	/**
-	 * Resolve URL before connecting to remote.
-	 * The returned URL will be used to connect to the remote instead.
-	 *
-	 * This callback is deprecated; users should use
-	 * git_remote_ready_cb and configure the instance URL instead.
-	 */
-	git_url_resolve_cb resolve_url;
-#endif
-
 	/**
 	 * Each time a reference is updated locally, this function
 	 * will be called with information about it. This should be

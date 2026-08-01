@@ -372,30 +372,3 @@ void git_error_system_set(int code)
 	errno = code;
 #endif
 }
-
-/* Deprecated error values and functions */
-
-#ifndef GIT_DEPRECATE_HARD
-
-#include "git2/deprecated.h"
-
-const git_error *giterr_last(void)
-{
-	return git_error_last();
-}
-
-void giterr_clear(void)
-{
-	git_error_clear();
-}
-
-void giterr_set_str(int error_class, const char *string)
-{
-	git_error_set_str(error_class, string);
-}
-
-void giterr_set_oom(void)
-{
-	git_error_set_oom();
-}
-#endif

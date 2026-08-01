@@ -332,13 +332,6 @@ int git_oid_is_zero(const git_oid *oid_a)
 	return git_oid_raw_cmp(a, git_oid_zero, size) == 0 ? 1 : 0;
 }
 
-#ifndef GIT_DEPRECATE_HARD
-int git_oid_iszero(const git_oid *oid_a)
-{
-	return git_oid_is_zero(oid_a);
-}
-#endif
-
 typedef short node_index;
 
 typedef union {

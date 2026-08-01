@@ -1415,18 +1415,3 @@ int git_reference__is_unborn_head(bool *unborn, const git_reference *ref, git_re
 
 	return 0;
 }
-
-/* Deprecated functions */
-
-#ifndef GIT_DEPRECATE_HARD
-
-int git_reference_is_valid_name(const char *refname)
-{
-	int valid = 0;
-
-	git_reference__name_is_valid(&valid, refname, GIT_REFERENCE_FORMAT_ALLOW_ONELEVEL);
-
-	return valid;
-}
-
-#endif

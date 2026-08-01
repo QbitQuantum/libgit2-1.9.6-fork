@@ -1323,16 +1323,3 @@ cleanup:
 	git_vector_dispose(&entries);
 	return error;
 }
-
-/* Deprecated Functions */
-
-#ifndef GIT_DEPRECATE_HARD
-
-int git_treebuilder_write_with_buffer(git_oid *oid, git_treebuilder *bld, git_buf *buf)
-{
-	GIT_UNUSED(buf);
-
-	return git_treebuilder_write(oid, bld);
-}
-
-#endif

@@ -293,14 +293,6 @@ int git_worktree_add_options_init(git_worktree_add_options *opts,
 	return 0;
 }
 
-#ifndef GIT_DEPRECATE_HARD
-int git_worktree_add_init_options(git_worktree_add_options *opts,
-	unsigned int version)
-{
-	return git_worktree_add_options_init(opts, version);
-}
-#endif
-
 int git_worktree_add(git_worktree **out, git_repository *repo,
 	const char *name, const char *worktree,
 	const git_worktree_add_options *opts)
@@ -549,14 +541,6 @@ int git_worktree_prune_options_init(
 		git_worktree_prune_options, GIT_WORKTREE_PRUNE_OPTIONS_INIT);
 	return 0;
 }
-
-#ifndef GIT_DEPRECATE_HARD
-int git_worktree_prune_init_options(git_worktree_prune_options *opts,
-	unsigned int version)
-{
-	return git_worktree_prune_options_init(opts, version);
-}
-#endif
 
 int git_worktree_is_prunable(git_worktree *wt,
 	git_worktree_prune_options *opts)

@@ -77,10 +77,7 @@ struct git_packbuilder {
 	git_packbuilder_pobjectmap object_ix;
 	git_packbuilder_walk_objectmap walk_objects;
 	git_pool object_pool;
-
-#ifndef GIT_DEPRECATE_HARD
-	git_oid pack_oid; /* hash of written pack */
-#endif
+	
 	char *pack_name; /* name of written pack */
 
 	/* synchronization objects */

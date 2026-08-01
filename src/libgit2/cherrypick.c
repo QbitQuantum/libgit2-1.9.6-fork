@@ -231,11 +231,3 @@ int git_cherrypick_options_init(
 		opts, version, git_cherrypick_options, GIT_CHERRYPICK_OPTIONS_INIT);
 	return 0;
 }
-
-#ifndef GIT_DEPRECATE_HARD
-int git_cherrypick_init_options(
-	git_cherrypick_options *opts, unsigned int version)
-{
-	return git_cherrypick_options_init(opts, version);
-}
-#endif

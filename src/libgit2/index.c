@@ -626,13 +626,6 @@ int git_index_caps(const git_index *index)
 			(index->no_symlinks ? GIT_INDEX_CAPABILITY_NO_SYMLINKS : 0));
 }
 
-#ifndef GIT_DEPRECATE_HARD
-const git_oid *git_index_checksum(git_index *index)
-{
-	return (git_oid *)index->checksum;
-}
-#endif
-
 /**
  * Returns 1 for changed, 0 for not changed and <0 for errors
  */
@@ -3937,14 +3930,3 @@ void git_indexwriter_cleanup(git_indexwriter *writer)
 	git_index_free(writer->index);
 	writer->index = NULL;
 }
-
-/* Deprecated functions */
-
-#ifndef GIT_DEPRECATE_HARD
-int git_index_add_frombuffer(
-    git_index *index, const git_index_entry *source_entry,
-    const void *buffer, size_t len)
-{
-	return git_index_add_from_buffer(index, source_entry, buffer, len);
-}
-#endif

@@ -81,13 +81,6 @@ struct delta_info {
 	off64_t delta_off;
 };
 
-#ifndef GIT_DEPRECATE_HARD
-const git_oid *git_indexer_hash(const git_indexer *idx)
-{
-	return (git_oid *)idx->checksum;
-}
-#endif
-
 const char *git_indexer_name(const git_indexer *idx)
 {
 	return idx->name;
@@ -132,13 +125,6 @@ int git_indexer_options_init(git_indexer_options *opts, unsigned int version)
 		opts, version, git_indexer_options, GIT_INDEXER_OPTIONS_INIT);
 	return 0;
 }
-
-#ifndef GIT_DEPRECATE_HARD
-int git_indexer_init_options(git_indexer_options *opts, unsigned int version)
-{
-	return git_indexer_options_init(opts, version);
-}
-#endif
 
 GIT_INLINE(git_hash_algorithm_t) indexer_hash_algorithm(git_indexer *idx)
 {

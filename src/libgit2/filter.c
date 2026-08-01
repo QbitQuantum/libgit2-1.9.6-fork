@@ -448,12 +448,6 @@ static int filter_list_check_attributes(
 
 	if ((src->options.flags & GIT_FILTER_ATTRIBUTES_FROM_COMMIT) != 0) {
 		attr_opts.flags |= GIT_ATTR_CHECK_INCLUDE_COMMIT;
-
-#ifndef GIT_DEPRECATE_HARD
-		if (src->options.commit_id)
-			git_oid_cpy(&attr_opts.attr_commit_id, src->options.commit_id);
-		else
-#endif
 		git_oid_cpy(&attr_opts.attr_commit_id, &src->options.attr_commit_id);
 	}
 
@@ -893,17 +887,6 @@ static int buffered_stream_write(
 	return git_str_put(&buffered_stream->input, buffer, len);
 }
 
-#ifndef GIT_DEPRECATE_HARD
-# define BUF_TO_STRUCT(b, s) \
-	(b)->ptr = (s)->ptr; \
-	(b)->size = (s)->size;  \
-	(b)->reserved = (s)->asize;
-# define STRUCT_TO_BUF(s, b) \
-	(s)->ptr = (b)->ptr; \
-	(s)->size = (b)->size; \
-	(s)->asize = (b)->reserved;
-#endif
-
 static int buffered_stream_close(git_writestream *s)
 {
 	struct buffered_stream *buffered_stream = (struct buffered_stream *)s;
@@ -913,25 +896,6 @@ static int buffered_stream_close(git_writestream *s)
 
 	GIT_ASSERT_ARG(buffered_stream);
 
-#ifndef GIT_DEPRECATE_HARD
-	if (buffered_stream->write_fn == NULL) {
-		git_buf legacy_output = GIT_BUF_INIT,
-		        legacy_input = GIT_BUF_INIT;
-
-		BUF_TO_STRUCT(&legacy_output, buffered_stream->output);
-		BUF_TO_STRUCT(&legacy_input, &buffered_stream->input);
-
-		error = buffered_stream->legacy_write_fn(
-			buffered_stream->filter,
-			buffered_stream->payload,
-			&legacy_output,
-			&legacy_input,
-			buffered_stream->source);
-
-		STRUCT_TO_BUF(buffered_stream->output, &legacy_output);
-		STRUCT_TO_BUF(&buffered_stream->input, &legacy_input);
-	} else
-#endif
 	error = buffered_stream->write_fn(
 		buffered_stream->filter,
 		buffered_stream->payload,
@@ -999,58 +963,12 @@ int git_filter_buffered_stream_new(
 	return 0;
 }
 
-#ifndef GIT_DEPRECATE_HARD
-static int buffered_legacy_stream_new(
-	git_writestream **out,
-	git_filter *filter,
-	int (*legacy_write_fn)(git_filter *, void **, git_buf *, const git_buf *, const git_filter_source *),
-	git_str *temp_buf,
-	void **payload,
-	const git_filter_source *source,
-	git_writestream *target)
-{
-	struct buffered_stream *buffered_stream = git__calloc(1, sizeof(struct buffered_stream));
-	GIT_ERROR_CHECK_ALLOC(buffered_stream);
-
-	buffered_stream->parent.write = buffered_stream_write;
-	buffered_stream->parent.close = buffered_stream_close;
-	buffered_stream->parent.free = buffered_stream_free;
-	buffered_stream->filter = filter;
-	buffered_stream->legacy_write_fn = legacy_write_fn;
-	buffered_stream->output = temp_buf ? temp_buf : &buffered_stream->temp_buf;
-	buffered_stream->payload = payload;
-	buffered_stream->source = source;
-	buffered_stream->target = target;
-
-	if (temp_buf)
-		git_str_clear(temp_buf);
-
-	*out = (git_writestream *)buffered_stream;
-	return 0;
-}
-#endif
-
 static int setup_stream(
 	git_writestream **out,
 	git_filter_entry *fe,
 	git_filter_list *filters,
 	git_writestream *last_stream)
 {
-#ifndef GIT_DEPRECATE_HARD
-	GIT_ASSERT(fe->filter->stream || fe->filter->apply);
-
-	/*
-	 * If necessary, create a stream that proxies the traditional
-	 * application.
-	 */
-	if (!fe->filter->stream) {
-		/* Create a stream that proxies the one-shot apply */
-		return buffered_legacy_stream_new(out,
-			fe->filter, fe->filter->apply, filters->temp_buf,
-			&fe->payload, &filters->source, last_stream);
-	}
-#endif
-
 	GIT_ASSERT(fe->filter->stream);
 	return fe->filter->stream(out, fe->filter,
 		&fe->payload, &filters->source, last_stream);
@@ -1201,21 +1119,3 @@ int git_filter_init(git_filter *filter, unsigned int version)
 	GIT_INIT_STRUCTURE_FROM_TEMPLATE(filter, version, git_filter, GIT_FILTER_INIT);
 	return 0;
 }
-
-#ifndef GIT_DEPRECATE_HARD
-
-int git_filter_list_stream_data(
-	git_filter_list *filters,
-	git_buf *data,
-	git_writestream *target)
-{
-	return git_filter_list_stream_buffer(filters, data->ptr, data->size, target);
-}
-
-int git_filter_list_apply_to_data(
-	git_buf *tgt, git_filter_list *filters, git_buf *src)
-{
-	return git_filter_list_apply_to_buffer(tgt, filters, src->ptr, src->size);
-}
-
-#endif

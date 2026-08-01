@@ -703,10 +703,3 @@ int git_clone_options_init(git_clone_options *opts, unsigned int version)
 		opts, version, git_clone_options, GIT_CLONE_OPTIONS_INIT);
 	return 0;
 }
-
-#ifndef GIT_DEPRECATE_HARD
-int git_clone_init_options(git_clone_options *opts, unsigned int version)
-{
-	return git_clone_options_init(opts, version);
-}
-#endif

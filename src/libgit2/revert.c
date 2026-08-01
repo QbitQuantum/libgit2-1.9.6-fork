@@ -230,10 +230,3 @@ int git_revert_options_init(git_revert_options *opts, unsigned int version)
 		opts, version, git_revert_options, GIT_REVERT_OPTIONS_INIT);
 	return 0;
 }
-
-#ifndef GIT_DEPRECATE_HARD
-int git_revert_init_options(git_revert_options *opts, unsigned int version)
-{
-	return git_revert_options_init(opts, version);
-}
-#endif

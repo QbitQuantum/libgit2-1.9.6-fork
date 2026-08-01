@@ -72,11 +72,7 @@ typedef struct {
 	/** See `git_filter_flag_t` above */
 	uint32_t flags;
 
-#ifdef GIT_DEPRECATE_HARD
 	void *reserved;
-#else
-	git_oid *commit_id;
-#endif
 
 	/**
 	 * The commit to load attributes from, when

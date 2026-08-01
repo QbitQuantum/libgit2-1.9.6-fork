@@ -229,13 +229,6 @@ int git_push_update_tips(git_push *push, const git_remote_callbacks *callbacks)
 				git_str_cstr(&remote_ref_name),
 				&push_spec->roid, &push_spec->loid,
 				&push_spec->refspec, callbacks->payload);
-#ifndef GIT_DEPRECATE_HARD
-		else if (callbacks->update_tips)
-			error = callbacks->update_tips(
-				git_str_cstr(&remote_ref_name),
-				&push_spec->roid, &push_spec->loid,
-				callbacks->payload);
-#endif
 
 		if (error < 0) {
 			git_error_set_after_callback_function(error, "git_remote_push");
@@ -610,10 +603,3 @@ int git_push_options_init(git_push_options *opts, unsigned int version)
 		opts, version, git_push_options, GIT_PUSH_OPTIONS_INIT);
 	return 0;
 }
-
-#ifndef GIT_DEPRECATE_HARD
-int git_push_init_options(git_push_options *opts, unsigned int version)
-{
-	return git_push_options_init(opts, version);
-}
-#endif

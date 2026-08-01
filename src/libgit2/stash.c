@@ -952,13 +952,6 @@ int git_stash_save_options_init(git_stash_save_options *opts, unsigned int versi
 	return 0;
 }
 
-#ifndef GIT_DEPRECATE_HARD
-int git_stash_apply_init_options(git_stash_apply_options *opts, unsigned int version)
-{
-	return git_stash_apply_options_init(opts, version);
-}
-#endif
-
 #define NOTIFY_PROGRESS(opts, progress_type)				\
 	do {								\
 		if ((opts).progress_cb &&				\

@@ -440,11 +440,6 @@ static int attr_setup(
 		goto out;
 
 	if ((opts && (opts->flags & GIT_ATTR_CHECK_INCLUDE_COMMIT) != 0)) {
-#ifndef GIT_DEPRECATE_HARD
-		if (opts->commit_id)
-			commit_source.commit_id = opts->commit_id;
-		else
-#endif
 		commit_source.commit_id = &opts->attr_commit_id;
 
 		if ((error = preload_attr_source(repo, attr_session, &commit_source)) < 0)
@@ -600,11 +595,6 @@ static int push_one_attr(void *ref, const char *path)
 		git_attr_file_source source = { src[i], path, GIT_ATTR_FILE };
 
 		if (src[i] == GIT_ATTR_FILE_SOURCE_COMMIT && info->opts) {
-#ifndef GIT_DEPRECATE_HARD
-			if (info->opts->commit_id)
-				source.commit_id = info->opts->commit_id;
-			else
-#endif
 			source.commit_id = &info->opts->attr_commit_id;
 		}
 

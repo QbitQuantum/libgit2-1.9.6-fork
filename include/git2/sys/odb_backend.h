@@ -149,27 +149,6 @@ GIT_EXTERN(void *) git_odb_backend_data_alloc(git_odb_backend *backend, size_t l
  */
 GIT_EXTERN(void) git_odb_backend_data_free(git_odb_backend *backend, void *data);
 
-
-/*
- * Users can avoid deprecated functions by defining `GIT_DEPRECATE_HARD`.
- */
-#ifndef GIT_DEPRECATE_HARD
-
-/**
- * Allocate memory for an ODB object from a custom backend.  This is
- * an alias of `git_odb_backend_data_alloc` and is preserved for
- * backward compatibility.
- *
- * This function is deprecated, but there is no plan to remove this
- * function at this time.
- *
- * @deprecated git_odb_backend_data_alloc
- * @see git_odb_backend_data_alloc
- */
-GIT_EXTERN(void *) git_odb_backend_malloc(git_odb_backend *backend, size_t len);
-
-#endif
-
 /** @} */
 GIT_END_DECL
 

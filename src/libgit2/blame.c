@@ -231,29 +231,6 @@ const git_blame_hunk *git_blame_hunk_byline(
 	return git_blame_hunk_byindex(blame, i);
 }
 
-#ifndef GIT_DEPRECATE_HARD
-uint32_t git_blame_get_hunk_count(git_blame *blame)
-{
-	size_t count = git_blame_hunkcount(blame);
-	GIT_ASSERT(count < UINT32_MAX);
-	return (uint32_t)count;
-}
-
-const git_blame_hunk *git_blame_get_hunk_byindex(
-	git_blame *blame,
-	uint32_t index)
-{
-	return git_blame_hunk_byindex(blame, index);
-}
-
-const git_blame_hunk *git_blame_get_hunk_byline(
-	git_blame *blame,
-	size_t lineno)
-{
-	return git_blame_hunk_byline(blame, lineno);
-}
-#endif
-
 static int normalize_options(
 		git_blame_options *out,
 		const git_blame_options *in,
@@ -649,10 +626,3 @@ int git_blame_options_init(git_blame_options *opts, unsigned int version)
 		opts, version, git_blame_options, GIT_BLAME_OPTIONS_INIT);
 	return 0;
 }
-
-#ifndef GIT_DEPRECATE_HARD
-int git_blame_init_options(git_blame_options *opts, unsigned int version)
-{
-	return git_blame_options_init(opts, version);
-}
-#endif

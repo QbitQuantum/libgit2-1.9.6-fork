@@ -174,20 +174,6 @@ GIT_EXTERN(int) git_indexer_append(git_indexer *idx, const void *data, size_t si
  */
 GIT_EXTERN(int) git_indexer_commit(git_indexer *idx, git_indexer_progress *stats);
 
-#ifndef GIT_DEPRECATE_HARD
-/**
- * Get the packfile's hash
- *
- * A packfile's name is derived from the sorted hashing of all object
- * names. This is only correct after the index has been finalized.
- *
- * @deprecated use git_indexer_name
- * @param idx the indexer instance
- * @return the packfile's hash
- */
-GIT_EXTERN(const git_oid *) git_indexer_hash(const git_indexer *idx);
-#endif
-
 /**
  * Get the unique name for the resulting packfile.
  *

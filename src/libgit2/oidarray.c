@@ -78,12 +78,3 @@ bool git_oidarray__remove(git_array_oid_t *arr, git_oid *id)
 
 	return found;
 }
-
-#ifndef GIT_DEPRECATE_HARD
-
-void git_oidarray_free(git_oidarray *arr)
-{
-	git_oidarray_dispose(arr);
-}
-
-#endif

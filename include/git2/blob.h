@@ -152,21 +152,12 @@ typedef struct {
 	 */
 	uint32_t flags;
 
-#ifdef GIT_DEPRECATE_HARD
 	/**
 	 * Unused and reserved for ABI compatibility.
 	 *
 	 * @deprecated this value should not be set
 	 */
 	void *reserved;
-#else
-	/**
-	 * This value is unused and reserved for API compatibility.
-	 *
-	 * @deprecated this value should not be set
-	 */
-	git_oid *commit_id;
-#endif
 
 	/**
 	 * The commit to load attributes from, when
